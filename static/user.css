@@ -1,13 +1,13 @@
 .bar {
   font-family: "Inziu Iosevka SC";
 }
-
 .terminal {
   font-family: "Inziu Iosevka SC";
   line-height: 14px;
 }
-
 .terminal > div, .terminal > div span {
-  display: inline-block;
   height: 14px;
+}
+.terminal > div span {
+  display: inline-block;
 }
