@@ -1,0 +1,13 @@
+{
+  "name": "MyLab",
+  "version": "0.0.1",
+  "author": "CodeHz <CodeHz@Outlook.com>",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "tty.js": "codehz/tty.js"
+  },
+  "license": "MIT"
+}
