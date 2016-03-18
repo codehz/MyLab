@@ -49,7 +49,13 @@ body {
   top: 20px;
   left: 20px;
   z-index: 1000;
-  box-shadow: rgba(0, 0, 0, 0.8) 2px 2px 20px;
+  box-shadow: rgba(0, 0, 0, 0.6) 0px 0px 15px;
+  transition: opacity ease 0.3s;
+    opacity: 1;
+}
+
+.window[move] {
+  opacity: 0.6;
 }
 
 .maximized .window {
@@ -153,14 +159,13 @@ h1 {
 
 #open {
   top: 10px;
-  background: #333;
+  right: 40px;
+  background: none;
 }
 
 #lights {
-  font-size: 18px;
-  height: 46px;
-  top: 60px;
-  background: #555;
+  top: 10px;
+  background: none;
 }
 
 #open:hover, #lights:hover {

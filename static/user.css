@@ -11,3 +11,6 @@
 .terminal > div span {
   display: inline-block;
 }
+body {
+  overflow: hidden;
+}

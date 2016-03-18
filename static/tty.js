@@ -82,7 +82,7 @@ tty.open = function() {
 
   if (open) {
     on(open, 'click', function() {
-      new Window;
+      new TermWindow;
     });
   }
 
@@ -119,7 +119,7 @@ tty.open = function() {
 
     Object.keys(terms).forEach(function(key) {
       var data = terms[key]
-        , win = new Window
+        , win = new TermWindow
         , tab = win.tabs[0];
 
       delete tty.terms[tab.id];
@@ -193,10 +193,10 @@ tty.toggleLights = function() {
 };
 
 /**
- * Window
+ * TermWindow
  */
 
-function Window(socket) {
+function TermWindow(socket) {
   var self = this;
 
   EventEmitter.call(this);
@@ -256,9 +256,9 @@ function Window(socket) {
   });
 }
 
-inherits(Window, EventEmitter);
+inherits(TermWindow, EventEmitter);
 
-Window.prototype.bind = function() {
+TermWindow.prototype.bind = function() {
   var self = this
     , el = this.element
     , bar = this.bar
@@ -299,7 +299,7 @@ Window.prototype.bind = function() {
   });
 };
 
-Window.prototype.focus = function() {
+TermWindow.prototype.focus = function() {
   // Restack
   var parent = this.element.parentNode;
   if (parent && this.element != parent.lastChild) {
@@ -317,7 +317,7 @@ Window.prototype.focus = function() {
   this.emit('focus');
 };
 
-Window.prototype.destroy = function() {
+TermWindow.prototype.destroy = function() {
   if (this.destroyed) return;
   this.destroyed = true;
 
@@ -336,7 +336,7 @@ Window.prototype.destroy = function() {
   this.emit('close');
 };
 
-Window.prototype.drag = function(ev) {
+TermWindow.prototype.drag = function(ev) {
   var self = this
     , el = this.element;
 
@@ -349,9 +349,7 @@ Window.prototype.drag = function(ev) {
     pageY: ev.pageY
   };
 
-  el.style.opacity = '0.60';
-  el.style.cursor = 'move';
-  root.style.cursor = 'move';
+  el.setAttribute("move", "move");
 
   function move(ev) {
     el.style.left =
@@ -361,9 +359,7 @@ Window.prototype.drag = function(ev) {
   }
 
   function up() {
-    el.style.opacity = '';
-    el.style.cursor = '';
-    root.style.cursor = '';
+    el.removeAttribute("move");
 
     off(document, 'mousemove', move);
     off(document, 'mouseup', up);
@@ -381,7 +377,7 @@ Window.prototype.drag = function(ev) {
   on(document, 'mouseup', up);
 };
 
-Window.prototype.resizing = function(ev) {
+TermWindow.prototype.resizing = function(ev) {
   var self = this
     , el = this.element
     , term = this.focused;
@@ -435,7 +431,7 @@ Window.prototype.resizing = function(ev) {
   on(document, 'mouseup', up);
 };
 
-Window.prototype.maximize = function() {
+TermWindow.prototype.maximize = function() {
   if (this.minimize) return this.minimize();
 
   var self = this
@@ -494,7 +490,7 @@ Window.prototype.maximize = function() {
   this.emit('maximize');
 };
 
-Window.prototype.resize = function(cols, rows) {
+TermWindow.prototype.resize = function(cols, rows) {
   this.cols = cols;
   this.rows = rows;
 
@@ -506,18 +502,18 @@ Window.prototype.resize = function(cols, rows) {
   this.emit('resize', cols, rows);
 };
 
-Window.prototype.each = function(func) {
+TermWindow.prototype.each = function(func) {
   var i = this.tabs.length;
   while (i--) {
     func(this.tabs[i], i);
   }
 };
 
-Window.prototype.createTab = function() {
+TermWindow.prototype.createTab = function() {
   return new Tab(this, this.socket);
 };
 
-Window.prototype.highlight = function() {
+TermWindow.prototype.highlight = function() {
   var self = this;
 
   this.element.style.borderColor = 'orange';
@@ -528,7 +524,7 @@ Window.prototype.highlight = function() {
   this.focus();
 };
 
-Window.prototype.focusTab = function(next) {
+TermWindow.prototype.focusTab = function(next) {
   var tabs = this.tabs
     , i = indexOf(tabs, this.focused)
     , l = tabs.length;
@@ -544,11 +540,11 @@ Window.prototype.focusTab = function(next) {
   return this.focused && this.focused.focus();
 };
 
-Window.prototype.nextTab = function() {
+TermWindow.prototype.nextTab = function() {
   return this.focusTab(true);
 };
 
-Window.prototype.previousTab = function() {
+TermWindow.prototype.previousTab = function() {
   return this.focusTab(false);
 };
 
@@ -912,7 +908,7 @@ setTimeout(load, 200);
  * Expose
  */
 
-tty.Window = Window;
+tty.TermWindow = TermWindow;
 tty.Tab = Tab;
 tty.Terminal = Terminal;
 
